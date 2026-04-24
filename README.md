@@ -25,13 +25,10 @@
  2. 克隆项目
 
 git clone https://github.com/Yemi-11/campus-stray-cat-map.git
-cd campus-stray-cat-map
+<br>cd campus-stray-cat-map
 
 3. 安装依赖并启动
-bash
-cd server
-npm install
-npm run dev
+<br>cd server<br>npm install<br>npm run dev
 
 4. 访问页面
 地址	说明
