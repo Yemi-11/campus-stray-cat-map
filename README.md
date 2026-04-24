@@ -24,7 +24,6 @@
 > 本项目使用 SQLite 数据库。
  2. 克隆项目
 
-```bash
 git clone https://github.com/Yemi-11/campus-stray-cat-map.git
 cd campus-stray-cat-map
 
@@ -39,7 +38,7 @@ npm run dev
 http://localhost:3000/index.html	前端主页面
 http://localhost:3000/api/v1/cats	猫咪列表接口
 
-API 接口
+##API 接口
 Base URL: http://localhost:3000/api/v1
 
 猫咪档案
@@ -55,7 +54,7 @@ GET	/checkins/pending	查看打卡列表
 方法	  路径	        说明
 GET	/map/markers	获取地图标记点
 
-🗄️ 数据库设计
+##数据库设计
 数据库包含 5 张表：
 
 表名	       说明	            关键字段
