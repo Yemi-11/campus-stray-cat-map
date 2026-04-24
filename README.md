@@ -41,26 +41,33 @@ http://localhost:3000/api/v1/cats	猫咪列表接口
 ##  API接口
 Base URL: http://localhost:3000/api/v1
 
+
 猫咪档案
-方法	路径	             说明
-GET	   /cats	            获取猫咪列表
-GET	   /cats/:cat_id	    获取猫咪详情
-GET	/cats/:cat_id/checkins	获取猫咪故事墙
+| 方法 | 路径 | 说明 | 
+|------|------|------|
+| GET | /cats | 获取猫咪列表 |
+| GET | /cats/:cat_id | 获取猫咪详情 |
+| GET |	/cats/:cat_id/checkins |获取猫咪故事墙 |
+
 打卡互动
-方法	   路径	            说明
-POST	/checkins	      提交打卡
-GET	/checkins/pending	查看打卡列表
+| 方法 | 路径 | 说明 | 
+|------|------|------|
+| POST | /checkins | 提交打卡 |
+| GET | /checkins/pending | 查看打卡列表 |
+
 地图服务
-方法	  路径	        说明
-GET	/map/markers	获取地图标记点
+| 方法 | 路径 | 说明 | 
+|------|------|------|
+| GET | /map/markers | 获取地图标记点 |
 
 ##  数据库设计
 数据库包含 5 张表：
+| 表名 | 说明 | 关键字段 | 
+|------|------|------|
+| users | 用户信息 | - | id, openid, nickname, role |
+| cats | 猫咪档案 | cat_id (主键), nickname, gender, status |
+| photos |	猫咪照片 |photo_id (主键), cat_id (外键), status |
+| checkins | 打卡记录 | id (主键), user_id (外键), cat_id (外键) |
+| feeding_spots |	投喂点 |id (主键), name, lng, lat |
 
-表名	       说明	            关键字段
-users	    用户信息	    id, openid, nickname, role
-cats	    猫咪档案	    cat_id (主键), nickname, gender, status
-photos	    猫咪照片	    photo_id (主键), cat_id (外键), status
-checkins	 打卡记录	id (主键), user_id (外键), cat_id (外键)
-feeding_spots	投喂点	id (主键), name, lng, lat
 建表脚本：server/database.js
