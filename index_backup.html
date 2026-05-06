@@ -1,0 +1,1067 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#2b6e3c">
+    <title>娌虫捣鍠靛 路 鏍″洯娴佹氮鐚浘閴?/title>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=523ecdcad6c4b0dae55d47bde617dfdd&securityJsCode=e1ade3ea7caf1032987bab770e7b6e10"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #fefaf0;
+            color: #2c3e2f;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            padding: 12px;
+            padding-bottom: 100px;
+        }
+
+        header {
+            background: linear-gradient(125deg, #2b6e3c, #f5a623);
+            color: white;
+            padding: 20px 16px;
+            text-align: center;
+            border-radius: 24px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 20px rgba(43, 110, 60, 0.3);
+        }
+
+        header h1 {
+            font-size: 1.45rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        header p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        nav {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 40px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 8px;
+            padding: 4px 0;
+        }
+
+        nav li {
+            flex-shrink: 0;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #2b6e3c;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 8px 16px;
+            border-radius: 40px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        nav a:hover, nav a:active {
+            background: #eef4e6;
+            color: #b45f1b;
+        }
+
+        .section {
+            background: white;
+            padding: 20px 16px;
+            border-radius: 24px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            color: #2b6e3c;
+            margin-bottom: 16px;
+            border-left: 6px solid #f5a623;
+            padding-left: 12px;
+            font-size: 1.2rem;
+        }
+
+        
+
+        .cat-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+            justify-content: flex-start;
+        }
+
+        .tag {
+            background: linear-gradient(135deg, #7cb518 0%, #5a8a10 100%);
+            padding: 6px 14px;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: white;
+            box-shadow: 0 2px 8px rgba(124, 181, 24, 0.3);
+        }
+
+        .cat-gallery-container {
+            display: flex;
+            flex-direction: row;
+            gap: 12px;
+            height: 500px;
+        }
+
+        .cat-menu {
+            width: 140px;
+            background: linear-gradient(180deg, #fffef7 0%, #fff8e8 100%);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(185, 127, 16, 0.08);
+            border: 1px solid rgba(255, 200, 100, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-header {
+            background: linear-gradient(135deg, #7cb518 0%, #5a8a10 100%);
+            color: white;
+            padding: 12px 14px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .menu-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+        }
+
+        .menu-item {
+            padding: 10px 12px;
+            margin-bottom: 5px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #4a5d3a;
+            background: white;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .menu-item:hover {
+            background: #f5f0e0;
+            border-color: #ffe1b3;
+        }
+
+        .menu-item.active {
+            background: linear-gradient(135deg, #ffe8c8 0%, #ffd99a 100%);
+            border-color: #ffc864;
+            font-weight: 600;
+            color: #3b5c2a;
+        }
+
+        .cat-detail-panel {
+            flex: 1;
+            background: #fef9ef;
+            border-radius: 16px;
+            padding: 18px;
+            overflow-y: auto;
+            box-shadow: 0 4px 12px rgba(185, 127, 16, 0.08);
+            border: 1px solid rgba(255, 200, 100, 0.3);
+        }
+
+        .cat-profile {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .cat-avatar-large {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid #f5a623;
+            box-shadow: 0 6px 20px rgba(245, 166, 35, 0.4);
+        }
+
+        .cat-info {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .cat-info h3 {
+            font-size: 1.35rem;
+            color: #2b6e3c;
+            margin-bottom: 10px;
+        }
+
+        .cat-info p {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 6px;
+            color: #4a5c4a;
+        }
+
+        .story-wall {
+            background: #fff9ef;
+            border-radius: 20px;
+            padding: 16px;
+            margin-top: 18px;
+        }
+
+        .story-wall h4 {
+            font-size: 0.95rem;
+            color: #2b6e3c;
+            margin-bottom: 12px;
+        }
+
+        .comment {
+            background: white;
+            padding: 10px 12px;
+            border-radius: 16px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .comment-author {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #4a6741;
+            font-size: 0.85rem;
+        }
+
+        .comment p {
+            font-size: 0.85rem;
+            color: #5a6b5a;
+            line-height: 1.5;
+            margin-bottom: 4px;
+        }
+
+        .comment div:last-child {
+            font-size: 0.7rem;
+            color: #aa8e54;
+        }
+
+        .checkin-buttons {
+            display: flex;
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .checkin-btn {
+            flex: 1;
+            background: linear-gradient(135deg, #f5a623, #e07e2e);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(245, 166, 35, 0.3);
+        }
+
+        .checkin-btn:active {
+            transform: scale(0.95);
+        }
+
+        .map-panels-container {
+            display: flex;
+            flex-direction: row;
+            gap: 12px;
+            height: 550px;
+        }
+
+        .map-container {
+            flex: 1;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #e9f0e3;
+            position: relative;
+            width: 100%;
+        }
+
+        .side-panels {
+            width: 170px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .side-panel {
+            flex: 1;
+            background: linear-gradient(180deg, #fffef7 0%, #fff8e8 100%);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(185, 127, 16, 0.08);
+            border: 1px solid rgba(255, 200, 100, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            padding: 10px 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .panel-header.orange {
+            background: linear-gradient(135deg, #f5a623 0%, #e07e2e 100%);
+            color: white;
+        }
+
+        .panel-header.green {
+            background: linear-gradient(135deg, #7cb518 0%, #5a8a10 100%);
+            color: white;
+        }
+
+        .panel-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 6px;
+        }
+
+        .panel-item {
+            padding: 8px 10px;
+            margin-bottom: 4px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.78rem;
+            color: #5a6b4a;
+            background: white;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .panel-item:hover {
+            background: #f5f5f0;
+            border-color: #e8e0c8;
+        }
+
+        .panel-item.active {
+            font-weight: 600;
+            color: #3b5c2a;
+        }
+
+        .panel-item.feeding.active {
+            background: linear-gradient(135deg, #ffe8c8 0%, #ffd99a 100%);
+            border-color: #ffc864;
+        }
+
+        .panel-item.cat.active {
+            background: linear-gradient(135deg, #e6f5de 0%, #d4eed4 100%);
+            border-color: #7cb518;
+        }
+
+        #map-container {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .绉戞櫘-card {
+            margin-top: 12px;
+            background: #eef3e6;
+            border-radius: 20px;
+            padding: 12px 14px;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: #3b5c3b;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .stat-item {
+            background: #f1f7ec;
+            padding: 10px 20px;
+            border-radius: 40px;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #e08e2e;
+        }
+
+        .stat-item div:last-child {
+            font-size: 0.75rem;
+            color: #5a6b5a;
+            margin-top: 2px;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow-x: auto;
+            display: block;
+            font-size: 0.75rem;
+        }
+
+        .admin-table th, .admin-table td {
+            padding: 8px 6px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .admin-table th {
+            background: #f1f7ec;
+            font-weight: 600;
+            color: #2b6e3c;
+        }
+
+        .action-btn {
+            padding: 4px 10px;
+            border-radius: 30px;
+            border: none;
+            margin: 0 2px;
+            cursor: pointer;
+            font-size: 0.7rem;
+        }
+
+        .approve-btn { background: #4caf50; color: white; }
+        .reject-btn { background: #f44336; color: white; }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            justify-content: flex-end;
+            align-items: flex-end;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-height: 85vh;
+            border-radius: 24px 24px 0 0;
+            padding: 20px 16px;
+            padding-bottom: calc(20px + env(safe-area-inset-bottom));
+            overflow-y: auto;
+        }
+
+        .modal-content h3 {
+            font-size: 1.15rem;
+            color: #2b6e3c;
+            margin-bottom: 16px;
+        }
+
+        .modal-content label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #4a5c4a;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .modal-content input[type="text"],
+        .modal-content textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 16px;
+            border: 1px solid #ddd;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            background: #fafafa;
+        }
+
+        .modal-content textarea {
+            min-height: 80px;
+            resize: none;
+        }
+
+        .modal-content input[type="file"] {
+            margin-bottom: 12px;
+            width: 100%;
+        }
+
+        #aiPreview {
+            font-size: 0.75rem;
+            color: #b45f1b;
+            margin-bottom: 12px;
+        }
+
+        .user-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+        }
+
+        #modalTypeText {
+            font-size: 0.9rem;
+            color: #5a6b5a;
+            margin-bottom: 16px;
+        }
+
+        #closeModal {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #888;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        #storyInput {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 30px;
+            border: 1px solid #e2d5b6;
+            font-size: 0.85rem;
+            background: white;
+        }
+
+        #submitStoryBtn {
+            padding: 10px 18px;
+            font-size: 0.85rem;
+            border-radius: 30px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 16px;
+            font-size: 0.8rem;
+            color: #8a9a8a;
+        }
+
+        @media (min-width: 700px) {
+            .cat-gallery {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+            .cat-profile {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>馃悎 娌虫捣鍠靛 路 鏍″洯娴佹氮鐚浘閴?/h1>
+        <p>馃搶 鍩轰簬鐪熷疄妗ｆ | 鎵撳崱浜掑姩 | 绉戝鏁戝姪</p>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#map">馃椇锔?鍦板浘</a></li>
+            <li><a href="#gallery">馃摎 鍥鹃壌</a></li>
+            <li><a href="#checkin">馃摳 鎵撳崱</a></li>
+            <li><a href="#user">馃懁 鎴戠殑</a></li>
+            <li><a href="#admin">鈿欙笍 绠＄悊</a></li>
+        </ul>
+    </nav>
+
+    <section id="map" class="section">
+        <h2>馃搷 鏍″洯娴佹氮鐚垎甯?& 鍠傜尗鐐?/h2>
+        <div class="map-panels-container">
+            <div class="map-container">
+                <div id="map-container"></div>
+            </div>
+            <div class="side-panels">
+                <div id="feedingSpotsPanel" class="side-panel">
+                    <div class="panel-header orange">馃ィ 鍠傜尗鐐?/div>
+                    <div id="feedingSpotsList" class="panel-list"></div>
+                </div>
+                <div id="catLocationsPanel" class="side-panel">
+                    <div class="panel-header green">馃惐 鐚挭甯搁┗鐐?/div>
+                    <div id="catLocationsList" class="panel-list"></div>
+                </div>
+            </div>
+        </div>
+        <div class="绉戞櫘-card">
+            馃挕 姗樿壊鐚埅 = 鐚挭甯搁┗鐐?| 馃ィ 椋熺泦 = 寤鸿鎶曞杺鐐?| 鐐瑰嚮鏍囪鏌ョ湅妗ｆ
+        </div>
+    </section>
+
+    <section id="gallery" class="section">
+        <h2>馃惥 鐚挭鍥鹃壌</h2>
+        <div class="cat-gallery-container">
+            <div id="catMenuList" class="cat-menu">
+                <div class="menu-header">馃惐 鐚挭鍒楄〃</div>
+                <div id="catMenuItems" class="menu-items"></div>
+            </div>
+            <div id="catDetailArea" class="cat-detail-panel">
+                <div id="selectedCatDetail">鉁?璇蜂粠宸︿晶閫夋嫨涓€鍙尗鍜紝鏌ョ湅璇︾粏妗ｆ銆佹晠浜嬪拰鐣欒█锝?/div>
+            </div>
+        </div>
+    </section>
+
+    <section id="checkin" class="section">
+        <h2>馃摳 鍋堕亣/鎶曞杺鎵撳崱</h2>
+        <div class="checkin-buttons">
+            <button id="encounterBtn" class="checkin-btn">馃惥 鍋堕亣鎵撳崱</button>
+            <button id="feedBtn" class="checkin-btn">馃崥 鎶曞杺鎵撳崱</button>
+        </div>
+        <div class="绉戞櫘-card" style="background:#fcf2df;">
+            馃 鍠佃鍫?路 鎶曞杺椤荤煡锛氫笉瑕佸杺宸у厠鍔涖€佹磱钁便€佺墰濂讹紒鐚潯鐚伯涓轰匠锛屼繚鎸佹按婧愬共鍑€銆?        </div>
+    </section>
+
+    <section id="user" class="section">
+        <h2>馃樅 鎴戠殑鍠垫槦瓒宠抗</h2>
+        <div style="text-align: center; margin-bottom: 16px;">
+            <img src="https://picsum.photos/id/151/100/100" class="user-avatar">
+            <h3 style="margin-top: 10px; color: #2b6e3c;">娌虫捣鍠佃鑰?/h3>
+            <div class="stats">
+                <div class="stat-item"><div class="stat-number" id="userCheckinCount">0</div><div>鎵撳崱娆℃暟</div></div>
+                <div class="stat-item"><div class="stat-number" id="userCollectCount">5</div><div>鏀惰棌鐚挭</div></div>
+                <div class="stat-item"><div class="stat-number" id="userCommentCount">0</div><div>鐣欒█鏁?/div></div>
+            </div>
+        </div>
+        <div>
+            <h3 style="font-size: 0.95rem; color: #2b6e3c; margin-bottom: 10px;">馃搵 鎴戠殑鎵撳崱璁板綍</h3>
+            <div id="userCheckinList" style="max-height: 200px; overflow-y: auto;"></div>
+        </div>
+    </section>
+
+    <section id="admin" class="section">
+        <h2>馃洝锔?绠＄悊鍛樺鏍?& 鏁版嵁鐪嬫澘</h2>
+        <div class="admin-panel">
+            <h3 style="font-size: 0.95rem; color: #2b6e3c; margin-bottom: 10px;">鈴?寰呭鏍告墦鍗?/h3>
+            <table class="admin-table" id="auditTable">
+                <thead><tr><th>鐢ㄦ埛</th><th>绫诲瀷</th><th>浣嶇疆</th><th>AI璇嗗埆/澶囨敞</th><th>鎿嶄綔</th></tr></thead>
+                <tbody id="auditTbody"></tbody>
+            </table>
+        </div>
+        <div style="margin-top: 16px;">
+            <h3 style="font-size: 0.95rem; color: #2b6e3c; margin-bottom: 10px;">馃搳 鏍″洯鐚儏鐪嬫澘</h3>
+            <div class="stats">
+                <div class="stat-item"><div class="stat-number" id="totalCatsStat">0</div><div>甯搁┗鐚挭</div></div>
+                <div class="stat-item"><div class="stat-number" id="monthCheckinsStat">0</div><div>鏈湀鎵撳崱</div></div>
+                <div class="stat-item"><div class="stat-number" id="hotSpotsStat">12</div><div>楂樻鐜囧杺鐚偣</div></div>
+            </div>
+            <div style="background:#fef3e0; border-radius: 20px; padding: 12px; margin-top: 12px; font-size: 0.85rem;">馃弳 鏄庢槦鐚挭姒滐細鐚尓路濡栫簿路澶т綈路铚滄 | 鐑績鎶曞杺瀹橈細姗欏瓙鍚屽 灏忛奔骞插悰</div>
+        </div>
+    </section>
+    <footer>馃惐 鍏崇埍娴佹氮鐚?路 浠庤褰曞紑濮?路 HHU鍠靛憸绀?2026</footer>
+</div>
+
+<div id="checkinModal" class="modal">
+    <div class="modal-content">
+        <button id="closeModal">&times;</button>
+        <h3>馃摳 鏂版墦鍗?/h3>
+        <p id="modalTypeText"></p>
+        <label>馃搷 浣嶇疆</label>
+        <input type="text" id="checkinLocation" placeholder="鑷姩瀹氫綅鎴栨墜鍔ㄥ～鍐?>
+        <label>馃摲 涓婁紶鐓х墖 (AI璇嗗埆鍠垫槦浜?</label>
+        <input type="file" id="checkinPhoto" accept="image/*">
+        <div id="aiPreview"></div>
+        <label>馃摑 澶囨敞</label>
+        <textarea id="checkinNote" rows="3" placeholder="鍒嗕韩浣犵殑鍋堕亣鏁呬簨..."></textarea>
+        <button id="submitCheckin" class="checkin-btn" style="width:100%; margin-top:12px;">鎻愪氦鎵撳崱 寰呭鏍?/button>
+    </div>
+</div>
+
+<script>
+    const catsData = [
+        { id: 1, name: "澶т綈", gender: "鍏?, color: "鐙歌姳鐧借儭瀛?, personality: "涓嶅彲鎽革紝璐悆鎬傦紝灏忛粦鑳″瓙", status: "宸茬粷鑲?, location: "鍘氬妤笺€佽妭姘村洯銆佽タ闂?, image: "images/澶т綈.jpg", tags: ["鍏槑鐚?,"鑳嗗皬"], story: "灏忛粦鑳″瓙锛屾€ф牸鎬備絾椤藉己銆?, lat: 31.9145, lng: 118.7775 },
+        { id: 2, name: "澶ц劯(鏈堥ゼ)", gender: "鍏?, color: "鑴稿ぇ鐧藉槾", personality: "涓嶅彲鎽革紝鑴稿ぇ鑴氬ぇ", status: "宸茬粷鑲?, location: "鏍″洯瑗胯竟", image: "images/澶ц劯.jpg", tags: ["鍐版鐖哥埜"], story: "鑴稿ぇ鑴氬ぇ锛屽拰鏌犳鏄ソ鍏勫紵銆?, lat: 31.9125, lng: 118.7650 },
+        { id: 3, name: "鏌犳", gender: "鍏?, color: "姗樼櫧", personality: "涓嶅彲鎽革紝姘存灉澶╁洟", status: "宸茬粷鑲?, location: "瑗块棬", image: "images/鏌犳.jpg", tags: ["姘存灉澶╁洟"], story: "姘存灉澶╁洟鎴愬憳锛屾湡寰呮姇鍠傘€?, lat: 31.9120, lng: 118.7630 },
+        { id: 4, name: "椹埛(甯冧竵)", gender: "鍏?, color: "姗樼櫧", personality: "鍙崇溂澶辨槑锛屽彛鐐庢嫈鐗?, status: "宸茬粷鑲?, location: "鎬濇簮妤?, image: "images/椹埛.jpg", tags: ["鐙溂","鍙ｇ値"], story: "鍧氬己鐨勫皬鐚挭锛岄渶瑕佸叧鐖便€?, lat: 31.9150, lng: 118.7760 },
+        { id: 5, name: "濡栫簿", gender: "姣?, color: "涓夎姳", personality: "澶у涓嶅彲鎽革紝鏈夎唨鑳辩値", status: "宸茬粷鑲?, location: "22鑸嶄笅", image: "images/濡栫簿.jpg", tags: ["HHU鏍¤姳","鑶€鑳辩値"], story: "鏍¤姳绾х尗鍜紝闇€瑕佸鍠濇按銆?, lat: 31.9200, lng: 118.7730 },
+        { id: 6, name: "鐚尓", gender: "鍏?, color: "鐞ョ弨鐪兼鐧?, personality: "闂存帴鍙捀锛屾牎鑽夌骇", status: "宸茬粷鑲?, location: "涓滄箹閿氭梺", image: "images/鐚尓.jpg", tags: ["鏍¤崏","涓滄箹闇镐富"], story: "鐚湼澶╋紝瀹堟姢涓滄箹鐨勯湼涓汇€?, lat: 31.9150, lng: 118.7800 },
+        { id: 7, name: "姗樿儢", gender: "鍏?, color: "姗樿壊", personality: "鎬ф牸濂斤紝闇€鍑忚偉", status: "宸茬粷鑲?, location: "涓滄箹閿氭梺", image: "images/姗樿儢.jpg", tags: ["澶у摜澶?,"闇€鍑忚偉"], story: "鎲ㄥ帤鍙埍锛岀埍閽讳笅姘撮亾銆?, lat: 31.9150, lng: 118.7800 },
+        { id: 8, name: "钁¤悇(涔岄緳)", gender: "姣?, color: "涓夎姳", personality: "闈炲父鑳嗗皬锛屼笉鍙潬杩?, status: "宸茬粷鑲?, location: "鍕ゅ妤?, image: "images/钁¤悇.jpg", tags: ["姘存灉澶╁洟"], story: "璇缁濊偛闂逛箤榫欙紝寰堝皬涓€鍙€?, lat: 31.9110, lng: 118.7810 },
+        { id: 9, name: "鑺掓灉", gender: "鍏?, color: "姗樼櫧", personality: "鐪嬪績鎯呯粰鎽?, status: "宸茬粷鑲?, location: "鍗氬妤奸檮杩?, image: "images/鑺掓灉.jpg", tags: ["姘存灉澶╁洟","鑲ョ編"], story: "鍗氬妤兼按鏋滃ぉ鍥㈡垚鍛樸€?, lat: 31.9140, lng: 118.7815 },
+        { id: 10, name: "灞辩", gender: "姣?, color: "鐜崇憗", personality: "涓嶅彲闈犺繎锛屽皬楗《", status: "宸茬粷鑲?, location: "鍗氬妤?, image: "images/灞辩.jpg", tags: ["灏忛キ妗?], story: "瓒呯骇鑳藉悆锛屾瘡澶╁拰鑺掓灉鍚垫灦銆?, lat: 31.9140, lng: 118.7815 },
+        { id: 11, name: "姒磋幉", gender: "鍏?, color: "鐙歌姳", personality: "涓嶅彲鎽革紝鎬曚汉", status: "鏈粷鑲?, location: "鍗氬妤奸檮杩?, image: "images/姒磋幉.jpg", tags: ["鎬曚汉"], story: "鑳嗗皬鎬曚汉锛屼繚鎸佽窛绂汇€?, lat: 31.9140, lng: 118.7815 },
+        { id: 12, name: "澶у垁", gender: "鍏?, color: "鐙歌姳", personality: "鎬曚汉锛屽嚑涔庢棤娉曢潬杩?, status: "宸茬粷鑲?, location: "鍗氬妤?, image: "images/澶у垁.jpg", tags: ["楂樺喎"], story: "楂樺喎鐚挭锛岄毦浠ユ帴杩戙€?, lat: 31.9140, lng: 118.7815 },
+        { id: 13, name: "鐚寸尨", gender: "姣?, color: "鐧借韩姗樺熬", personality: "鎬曚汉锛岀啛鎮夊彲鎽?, status: "宸茬粷鑲?, location: "琛屾斂妤?, image: "images/鐚寸尨.jpg", tags: ["濞囨淮婊?], story: "鐚㈢嫴鐨勫濡堬紝娓╂煍鍙埍銆?, lat: 31.9195, lng: 118.7760 },
+        { id: 14, name: "鐚㈢嫴(鐒︾硸)", gender: "姣?, color: "涓夎姳", personality: "鑳嗗皬锛屼笉鍙潬杩?, status: "宸茬粷鑲?, location: "琛屾斂妤?, image: "images/鐚㈢嫴.jpg", tags: ["鑳嗗皬"], story: "鐚寸尨鐨勫コ鍎匡紝鑳嗗皬鍙埍銆?, lat: 31.9195, lng: 118.7760 },
+        { id: 15, name: "鑽夎崏", gender: "姣?, color: "鐙歌姳", personality: "鑳嗗皬锛屼笉鍙懜", status: "宸茬粷鑲?, location: "鍘氬妤?, image: "images/鑽夎崏.jpg", tags: ["鑳嗗皬"], story: "瀹夊畨鐨勫濡堬紝骞垮満鎭堕湼銆?, lat: 31.9145, lng: 118.7775 },
+        { id: 16, name: "楸奸ゼ(灏忔嘲杩?", gender: "鍏?, color: "娉拌开鍗?, personality: "鐔熸倝鍙懜鍙姳", status: "宸茬粷鑲?, location: "涔愬妤笺€佸帤瀛︽ゼ", image: "images/楸奸ゼ.jpg", tags: ["娉拌开鍗?,"浜蹭汉"], story: "鍗锋瘺灏忓彲鐖憋紝鍙姳鍙捀銆?, lat: 31.9145, lng: 118.7775 },
+        { id: 17, name: "瀹夊畨", gender: "姣?, color: "鐙歌姳", personality: "楗夸簡浜蹭汉锛屽悆楗变笉鐞?, status: "宸茬粷鑲?, location: "鎯呬汉鍧?, image: "images/瀹夊畨.jpg", tags: ["鍌插▏"], story: "鍌插▏灏忓叕涓伙紝楗夸簡鎵嶇悊浜恒€?, lat: 31.9090, lng: 118.7790 },
+        { id: 19, name: "濂舵様", gender: "姣?, color: "涓夎姳", personality: "涓嶅彲鎽?, status: "宸茬粷鑲?, location: "鍘氬妤笺€佺瑑瀛︽ゼ", image: "images/濂舵様.jpg", tags: ["楂樺喎"], story: "楂樺喎涓夎姳锛屼繚鎸佺绉樸€?, lat: 31.9145, lng: 118.7775 },
+        { id: 20, name: "閲戞", gender: "鍏?, color: "姗樼櫧", personality: "鍙弓涓嶅彲鎽革紝鏈夊彛鐐?, status: "宸茬粷鑲?, location: "涔愬妤?, image: "images/閲戞.jpg", tags: ["鍙ｇ値"], story: "鏈夊彛鐐庨渶瑕佺壒娈婄収椤俱€?, lat: 31.9145, lng: 118.7775 },
+        { id: 21, name: "鐚曠尨妗?, gender: "鍏?, color: "鐙歌姳", personality: "涓嶅彲闈犺繎涓嶅彲鎽?, status: "鏈粷鑲?, location: "琛屾斂妤笺€佸崥瀛︽ゼ", image: "images/鐚曠尨妗?jpg", tags: ["楂樺喎"], story: "楂樺喎灏忕帇瀛愶紝闅句互鎺ヨ繎銆?, lat: 31.9168, lng: 118.7788 },
+        { id: 22, name: "杩綈", gender: "鍏?, color: "鐙歌姳", personality: "鐔熸倝鍙懜", status: "宸茬粷鑲?, location: "鍗氬妤笺€佷笢婀?, image: "images/杩綈.jpg", tags: ["鍏ㄦ牎闂姩"], story: "鐖辨墦鏋讹紝灞呮棤瀹氭墍銆?, lat: 31.9145, lng: 118.7808 },
+        { id: 23, name: "楂橀珮", gender: "鍏?, color: "姗樼櫧", personality: "鑳嗗皬锛屼笉甯稿嚭鐜?, status: "宸茬粷鑲?, location: "涓滄箹", image: "images/楂橀珮.jpg", tags: ["绁炵"], story: "绁炵鐚挭锛屼笉甯稿嚭鐜般€?, lat: 31.9150, lng: 118.7800 },
+        { id: 24, name: "绗ㄧ", gender: "姣?, color: "涓夎姳", personality: "鑳嗗皬锛岄€愭笎浜蹭汉", status: "鏈粷鑲?, location: "涓滈棬闄勮繎", image: "images/绗ㄧ.jpg", tags: ["鑳嗗皬"], story: "姝ｅ湪鎱㈡參淇′换浜虹被銆? },
+        { id: 25, name: "鍏姳", gender: "姣?, color: "涓夎姳", personality: "浜蹭汉锛岃椽鍚冩椿娉?, status: "宸茬粷鑲?, location: "22鑸嶄笅", image: "images/鍏姳.jpg", tags: ["浜蹭汉","娲绘臣"], story: "娲绘臣鍙埍鐨勪笁鑺卞濡广€?, lat: 31.9200, lng: 118.7730 },
+        { id: 26, name: "鎽╂墭", gender: "鍏?, color: "姗樼櫧", personality: "浼氳弓浜猴紝鐖卞惖鏋?, status: "宸茬粷鑲?, location: "13鑸嶉檮杩?, image: "images/鎽╂墭.jpg", tags: ["灏忎釜瀛?], story: "灏忎釜瀛愮埍鍚垫灦銆?, lat: 31.9180, lng: 118.7685 },
+        { id: 27, name: "鍟靛暤", gender: "鍏?, color: "姗樼櫧", personality: "鐣ュ井鑳嗗皬锛屽彲鏀荤暐", status: "宸茬粷鑲?, location: "骞垮満", image: "images/鍟靛暤.jpg", tags: ["鑳嗗皬"], story: "鍙敾鐣ョ殑灏忓彲鐖便€?, lat: 31.9139, lng: 118.7862 },
+        { id: 28, name: "楗奸ゼ", gender: "鍏?, color: "姗樼櫧", personality: "鑳嗗皬璐悆", status: "宸茬粷鑲?, location: "琛屾斂妤奸檮杩?, image: "images/楗奸ゼ.jpg", tags: ["璐悆"], story: "鑳嗗皬浣嗚椽鍚冦€?, lat: 31.9195, lng: 118.7760 },
+        { id: 29, name: "鑻︽", gender: "鍏?, color: "姗樿壊", personality: "璐悆锛屾湁浜蹭汉鍊惧悜", status: "鏈粷鑲?, location: "琛屾斂妤奸檮杩?, image: "images/鑻︽.jpg", tags: ["璐悆"], story: "姝ｅ湪鍔姏鍙樹翰浜恒€?, lat: 31.9195, lng: 118.7760 },
+        { id: 30, name: "铚滄", gender: "鍏?, color: "姗樿壊", personality: "缁欐懜缁欐姳锛屼箹涔栫尗", status: "宸茬粷鑲?, location: "鍗氬妤?, image: "images/铚滄.jpg", tags: ["澶уソ鐚?], story: "缁濊偛鍚庤湑鍙樹负瓒呯骇涔栦箹鐚€?, lat: 31.9140, lng: 118.7815 },
+        { id: 31, name: "鐧界硸", gender: "鍏?, color: "鐧界尗", personality: "妗€楠滀笉椹?, status: "鏈粷鑲?, location: "涓滄箹闄勮繎", image: "images/鐧界硸.jpg", tags: ["鍚垫灦鐜?], story: "妗€楠滀笉椹殑鐧藉柕銆?, lat: 31.9150, lng: 118.7800 },
+        { id: 32, name: "灏忓┑", gender: "姣?, color: "鐜崇憗", personality: "闈炲父浜蹭汉", status: "宸茬粷鑲?, location: "19鑸嶉棬鍙?, image: "images/灏忓┑.jpg", tags: ["绮樹汉绮?], story: "闈炲父浜蹭汉鐨勭幊鐟佸濡广€? }
+    ];
+
+    const feedingSpots = [
+        { name: "鍐滃伐闄?, pos: [118.782753, 31.916234] },
+        { name: "琛屾斂妤煎崡闂?, pos: [118.784331, 31.912034] },
+        { name: "鍙犵繝灞?, pos: [118.785094, 31.915906] },
+        { name: "鍟嗗闄㈠浘涔﹂鑺卞洯", pos: [118.787338, 31.912231] },
+        { name: "鍨冨溇涓浆绔欙紙8鑸嶈タ渚э級", pos: [118.784149, 31.91754] },
+        { name: "涓滄箹涓滃寳瑙?, pos: [118.787799, 31.915384] },
+        { name: "涓滄箹鑸归敋", pos: [118.787122, 31.914806] },
+        { name: "鍗氬妤间笢渚?, pos: [118.788437, 31.912509] },
+        { name: "19鑸嶅贩瀛?, pos: [118.782079, 31.914421] },
+        { name: "22鑸嶆ゼ涓?, pos: [118.788815, 31.916518] },
+        { name: "鐚伯鍙栫敤鐐癸紙25鑸嶄笅锛?, pos: [118.789065, 31.916974] }
+    ];
+
+    let map, heatmap;
+    let pendingCheckins = [];
+    let userCheckins = JSON.parse(localStorage.getItem("hhucat_checkins")) || [];
+    let commentsMap = new Map();
+    let currentCat = catsData[0];
+
+    catsData.forEach(cat => {
+        if (!commentsMap.has(cat.id)) {
+            commentsMap.set(cat.id, [
+                { author: "鍠靛憸绀?, text: "馃惥 娆㈣繋鐣欎笅浣犲拰" + cat.name + "鐨勫皬鏁呬簨~", date: "2026-04-01" }
+            ]);
+        }
+    });
+
+    function renderCatGallery() {
+        const menuContainer = document.getElementById("catMenuItems");
+        menuContainer.innerHTML = catsData.map(cat => `
+            <div class="menu-item" data-id="${cat.id}">
+                ${cat.name}
+            </div>
+        `).join('');
+        document.querySelectorAll(".menu-item").forEach(item => {
+            item.addEventListener("click", () => {
+                document.querySelectorAll(".menu-item").forEach(i => i.classList.remove("active"));
+                item.classList.add("active");
+                const id = parseInt(item.dataset.id);
+                const cat = catsData.find(c => c.id === id);
+                if (cat) showCatDetail(cat);
+            });
+        });
+    }
+
+    function showCatDetail(cat) {
+        currentCat = cat;
+        const detailDiv = document.getElementById("selectedCatDetail");
+        detailDiv.innerHTML = `
+            <div class="cat-profile">
+                <img class="cat-avatar-large" src="${cat.image}" alt="${cat.name}">
+                <div class="cat-info">
+                    <h3>${cat.name} 路 ${cat.gender} 路 ${cat.color}</h3>
+                    <p><strong>馃搷 甯搁┗鍦帮細</strong> ${cat.location}</p>
+                    <p><strong>馃樅 鎬ф牸锛?/strong> ${cat.personality}</p>
+                    <p><strong>馃拤 缁濊偛锛?/strong> ${cat.status}</p>
+                    <p><strong>馃摉 灏忎紶锛?/strong> ${cat.story}</p>
+                    <div class="cat-tags">${cat.tags.map(t => '<span class="tag">#'+t+'</span>').join('')}</div>
+                </div>
+            </div>
+            <div class="story-wall">
+                <h4>馃挰 鏁呬簨澧?路 鐣欒█鏉?/h4>
+                <div id="storyCommentsList"></div>
+                <div style="display:flex; gap:8px; margin-top:12px;">
+                    <input type="text" id="storyInput" placeholder="鍒嗕韩浣犱笌${cat.name}鐨勬殩蹇冪灛闂?..">
+                    <button id="submitStoryBtn" class="checkin-btn">鐣欒█</button>
+                </div>
+            </div>
+        `;
+        renderStoryComments(cat.id);
+        document.getElementById("submitStoryBtn")?.addEventListener("click", () => {
+            const input = document.getElementById("storyInput");
+            if (input.value.trim()) {
+                addCommentToCat(cat.id, "鐑績鍚屽", input.value.trim());
+                input.value = "";
+                renderStoryComments(cat.id);
+                updateUserCommentCount();
+            }
+        });
+    }
+
+    function renderStoryComments(catId) {
+        const container = document.getElementById("storyCommentsList");
+        if (!container) return;
+        const comments = commentsMap.get(catId) || [];
+        container.innerHTML = comments.map(c => `<div class="comment"><div class="comment-author">馃悎 ${c.author}</div><p>${c.text}</p><div style="font-size:11px; color:#aa8e54;">${c.date}</div></div>`).join('');
+    }
+
+    function addCommentToCat(catId, author, text) {
+        let arr = commentsMap.get(catId) || [];
+        arr.unshift({ author, text, date: new Date().toLocaleString() });
+        commentsMap.set(catId, arr);
+        localStorage.setItem("hhucat_comments", JSON.stringify([...commentsMap.entries()]));
+    }
+
+    function updateUserCommentCount() {
+        let totalComments = 0;
+        for (let val of commentsMap.values()) totalComments += val.length;
+        document.getElementById("userCommentCount").innerText = totalComments;
+    }
+
+    function initMap() {
+        try {
+            if (typeof AMap === 'undefined') {
+                setTimeout(initMap, 500);
+                return;
+            }
+
+            map = new AMap.Map('map-container', {
+                zoom: 17,
+                center: [118.786191, 31.913925],
+                viewMode: '2D',
+                mapStyle: 'amap://styles/normal'
+            });
+
+            map.addControl(new AMap.ToolBar());
+            map.addControl(new AMap.Scale());
+
+            catsData.forEach(cat => {
+                if (cat.lat && cat.lng) {
+                    let marker = new AMap.Marker({
+                        position: [cat.lng, cat.lat],
+                        title: cat.name,
+                        icon: new AMap.Icon({
+                            size: new AMap.Size(30, 30),
+                            image: "https://webapi.amap.com/theme/v1.3/markers/b/mark_blue.png",
+                            imageSize: new AMap.Size(30, 30)
+                        }),
+                        offset: new AMap.Pixel(-15, -15)
+                    });
+                    marker.setMap(map);
+                    marker.on('click', () => {
+                        showCatDetail(cat);
+                        document.getElementById("gallery").scrollIntoView({ behavior: "smooth" });
+                    });
+                }
+            });
+
+            feedingSpots.forEach(spot => {
+                let feedMarker = new AMap.Marker({
+                    position: spot.pos,
+                    title: spot.name,
+                    icon: new AMap.Icon({
+                        size: new AMap.Size(30, 30),
+                        image: "https://webapi.amap.com/theme/v1.3/markers/b/mark_orange.png",
+                        imageSize: new AMap.Size(30, 30)
+                    }),
+                    offset: new AMap.Pixel(-15, -15)
+                });
+                feedMarker.setMap(map);
+                feedMarker.on('click', () => {
+                    let info = new AMap.InfoWindow({ content: '<div style="padding:5px; font-size:12px;">馃嵔锔?'+spot.name+'<br>鎺ㄨ崘鎶曞杺鐐癸紝璇锋斁鐚伯/娓呮按</div>' });
+                    info.open(map, spot.pos);
+                });
+            });
+
+            AMap.plugin('AMap.Heatmap', () => {
+                heatmap = new AMap.Heatmap(map, {
+                    radius: 25,
+                    opacity: [0, 0.7],
+                    visible: false
+                });
+                let heatData = catsData.filter(c => c.lat).map(c => ({ lng: c.lng, lat: c.lat, count: 12 }));
+                heatmap.setDataSet({ data: heatData, max: 20 });
+            });
+
+        } catch (error) {
+            console.error('鍦板浘鍒濆鍖栧け璐?', error);
+        }
+    }
+
+    const modal = document.getElementById("checkinModal");
+    let currentCheckinType = "鍋堕亣";
+
+    function openModal(type) {
+        currentCheckinType = type;
+        document.getElementById("modalTypeText").innerHTML = `${type}鎵撳崱 路 涓婁紶鐓х墖AI杈呭姪璇嗗埆`;
+        modal.style.display = "flex";
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(pos => {
+                document.getElementById("checkinLocation").value = `鑷姩瀹氫綅 (${pos.coords.latitude.toFixed(4)},${pos.coords.longitude.toFixed(4)})`;
+            }, () => {});
+        }
+    }
+
+    document.getElementById("encounterBtn").onclick = () => openModal("鍋堕亣");
+    document.getElementById("feedBtn").onclick = () => openModal("鎶曞杺");
+    document.getElementById("closeModal").onclick = () => modal.style.display = "none";
+
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) modal.style.display = "none";
+    });
+
+    document.getElementById("submitCheckin").onclick = () => {
+        let loc = document.getElementById("checkinLocation").value || "鏍″洯鏌愬";
+        let note = document.getElementById("checkinNote").value;
+        let file = document.getElementById("checkinPhoto").files[0];
+        let aiMsg = "鏈瘑鍒?;
+        if (file) aiMsg = "馃 AI妯℃嫙璇嗗埆: 鐤戜技姗樼尗/鐙歌姳 (寰呯鐞嗗憳纭)";
+        const newRecord = { id: Date.now(), user: "娌虫捣鍠佃鑰?, type: currentCheckinType, location: loc, note, ai: aiMsg, status: "pending", timestamp: new Date().toLocaleString() };
+        pendingCheckins.push(newRecord);
+        renderAuditTable();
+        modal.style.display = "none";
+        document.getElementById("checkinPhoto").value = "";
+        alert("鎵撳崱宸叉彁浜わ紝绛夊緟绠＄悊鍛樺鏍糕湪");
+    };
+
+    function renderAuditTable() {
+        const tbody = document.getElementById("auditTbody");
+        tbody.innerHTML = pendingCheckins.map((item, idx) => `
+            <tr>
+                <td>${item.user}</td><td>${item.type}</td><td>${item.location}</td><td>${item.ai}</td>
+                <td><button class="action-btn approve-btn" data-idx="${idx}">閫氳繃</button><button class="action-btn reject-btn" data-idx="${idx}">鎷掔粷</button></td>
+            </tr>
+        `).join('');
+        document.querySelectorAll(".approve-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                let idx = btn.dataset.idx;
+                let approved = pendingCheckins[idx];
+                userCheckins.push({ ...approved, status: "approved" });
+                localStorage.setItem("hhucat_checkins", JSON.stringify(userCheckins));
+                pendingCheckins.splice(idx, 1);
+                renderAuditTable();
+                updatePersonalStats();
+                alert("瀹℃牳閫氳繃锛屽湴鍥剧儹搴﹀鍔?);
+                if (heatmap) heatmap.show();
+            });
+        });
+        document.querySelectorAll(".reject-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                let idx = btn.dataset.idx;
+                pendingCheckins.splice(idx, 1);
+                renderAuditTable();
+            });
+        });
+    }
+
+    function updatePersonalStats() {
+        document.getElementById("userCheckinCount").innerText = userCheckins.length;
+        const listHtml = userCheckins.map(c => `<div class="comment"><strong>${c.type}鎵撳崱</strong> ${c.location}<br><small>${c.timestamp}</small><p>${c.note || ''}</p></div>`).join('');
+        document.getElementById("userCheckinList").innerHTML = listHtml || "<div style='text-align:center; color:#999; padding:10px;'>鏆傛棤鎵撳崱璁板綍</div>";
+        const thisMonth = userCheckins.filter(c => new Date(c.timestamp).getMonth() === new Date().getMonth()).length;
+        document.getElementById("monthCheckinsStat").innerText = thisMonth + pendingCheckins.length;
+        document.getElementById("totalCatsStat").innerText = catsData.length;
+    }
+
+    function renderFeedingSpotsList() {
+        const container = document.getElementById("feedingSpotsList");
+        container.innerHTML = feedingSpots.map((spot, index) => `
+            <div class="panel-item feeding" data-index="${index}">
+                馃嵔锔?${spot.name}
+            </div>
+        `).join('');
+        document.querySelectorAll(".panel-item.feeding").forEach(item => {
+            item.addEventListener("click", () => {
+                document.querySelectorAll(".panel-item").forEach(i => i.classList.remove("active"));
+                item.classList.add("active");
+                const index = parseInt(item.dataset.index);
+                const spot = feedingSpots[index];
+                if (spot && map) {
+                    map.setCenter(spot.pos);
+                    map.setZoom(18);
+                    let info = new AMap.InfoWindow({ 
+                        content: '<div style="padding:8px; font-size:14px;">馃嵔锔?'+spot.name+'<br>鎺ㄨ崘鎶曞杺鐐癸紝璇锋斁鐚伯/娓呮按</div>' 
+                    });
+                    info.open(map, spot.pos);
+                }
+            });
+        });
+    }
+
+    function renderCatLocationsList() {
+        const container = document.getElementById("catLocationsList");
+        
+        const locationGroups = {};
+        catsData.filter(cat => cat.lat && cat.lng).forEach(cat => {
+            const key = cat.lat.toFixed(4) + ',' + cat.lng.toFixed(4);
+            if (!locationGroups[key]) {
+                locationGroups[key] = { location: cat.location, lat: cat.lat, lng: cat.lng, cats: [] };
+            }
+            locationGroups[key].cats.push(cat.name);
+        });
+        
+        const locations = Object.values(locationGroups);
+        container.innerHTML = locations.map((loc, index) => `
+            <div class="panel-item cat" data-index="${index}">
+                锟?${loc.location}
+            </div>
+        `).join('');
+        
+        document.querySelectorAll(".panel-item.cat").forEach(item => {
+            item.addEventListener("click", () => {
+                document.querySelectorAll(".panel-item").forEach(i => i.classList.remove("active"));
+                item.classList.add("active");
+                const index = parseInt(item.dataset.index);
+                const loc = locations[index];
+                if (loc && map) {
+                    map.setCenter([loc.lng, loc.lat]);
+                    map.setZoom(18);
+                    const catsList = loc.cats.join('銆?);
+                    let info = new AMap.InfoWindow({ 
+                        content: '<div style="padding:8px; font-size:14px;">锟?'+loc.location+'<br>甯搁┗鐚挭: '+catsList+'</div>' 
+                    });
+                    info.open(map, [loc.lng, loc.lat]);
+                }
+            });
+        });
+    }
+
+    function init() {
+        renderCatGallery();
+        showCatDetail(catsData[0]);
+        initMap();
+        renderFeedingSpotsList();
+        renderCatLocationsList();
+        renderAuditTable();
+        updatePersonalStats();
+        updateUserCommentCount();
+        document.getElementById("hotSpotsStat").innerText = feedingSpots.length;
+        const savedComments = localStorage.getItem("hhucat_comments");
+        if (savedComments) {
+            try {
+                const arr = JSON.parse(savedComments);
+                commentsMap.clear();
+                arr.forEach(([k, v]) => commentsMap.set(parseInt(k), v));
+                if (currentCat) renderStoryComments(currentCat.id);
+                updateUserCommentCount();
+            } catch(e) {}
+        }
+    }
+    init();
+</script>
+</body>
+</html>

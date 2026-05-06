@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#2b6e3c">
+    <title>河海喵境 · 校园流浪猫图鉴</title>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=523ecdcad6c4b0dae55d47bde617dfdd&securityJsCode=e1ade3ea7caf1032987bab770e7b6e10"></script>
+    <script type="text/javascript" src="locations.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #fefaf0;
+            color: #2c3e2f;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            padding: 12px;
+            padding-bottom: 100px;
+        }
+
+        header {
+            background: linear-gradient(125deg, #2b6e3c, #f5a623);
+            color: white;
+            padding: 20px 16px;
+            text-align: center;
+            border-radius: 24px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 20px rgba(43, 110, 60, 0.3);
+        }
+
+        header h1 {
+            font-size: 1.45rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        header p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        nav {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 40px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 8px;
+            padding: 4px 0;
+        }
+
+        nav li {
+            flex-shrink: 0;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #2b6e3c;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 8px 16px;
+            border-radius: 40px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        nav a:hover, nav a:active {
+            background: #eef4e6;
+            color: #b45f1b;
+        }
+
+        .section {
+            background: white;
+            padding: 20px 16px;
+            border-radius: 24px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            color: #2b6e3c;
+            margin-bottom: 16px;
+            border-left: 6px solid #f5a623;
+            padding-left: 12px;
+            font-size: 1.2rem;
+        }
+
+        
+
+        .cat-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+            justify-content: flex-start;
+        }
+
+        .tag {
+            background: linear-gradient(135deg, #7cb518 0%, #5a8a10 100%);
+            padding: 6px 14px;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: white;
+            box-shadow: 0 2px 8px rgba(124, 181, 24, 0.3);
+        }
+
+        .cat-gallery-container {
+            display: flex;
+            flex-direction: row;
+            gap: 12px;
+            height: 500px;
+        }
+
+        .cat-menu {
+            width: 140px;
+            background: linear-gradient(180deg, #fffef7 0%, #fff8e8 100%);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(185, 127, 16, 0.08);
+            border: 1px solid rgba(255, 200, 100, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-header {
+            background: linear-gradient(135deg, #7cb518 0%, #5a8a10 100%);
+            color: white;
+            padding: 12px 14px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .menu-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+        }
+
+        .menu-item {
+            padding: 10px 12px;
+            margin-bottom: 5px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #4a5d3a;
+            background: white;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .menu-item:hover {
+            background: #f5f0e0;
+            border-color: #ffe1b3;
+        }
+
+        .menu-item.active {
+            background: linear-gradient(135deg, #ffe8c8 0%, #ffd99a 100%);
+            border-color: #ffc864;
+            font-weight: 600;
+            color: #3b5c2a;
+        }
+
+        .cat-detail-panel {
+            flex: 1;
+            background: #fef9ef;
+            border-radius: 16px;
+            padding: 18px;
+            overflow-y: auto;
+            box-shadow: 0 4px 12px rgba(185, 127, 16, 0.08);
+            border: 1px solid rgba(255, 200, 100, 0.3);
+        }
+
+        .cat-profile {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .cat-avatar-large {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid #f5a623;
+            box-shadow: 0 6px 20px rgba(245, 166, 35, 0.4);
+        }
+
+        .cat-info {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .cat-info h3 {
+            font-size: 1.35rem;
+            color: #2b6e3c;
+            margin-bottom: 10px;
+        }
+
+        .cat-info p {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 6px;
+            color: #4a5c4a;
+        }
+
+        .story-wall {
+            background: #fff9ef;
+            border-radius: 20px;
+            padding: 16px;
+            margin-top: 18px;
+        }
+
+        .story-wall h4 {
+            font-size: 0.95rem;
+            color: #2b6e3c;
+            margin-bottom: 12px;
+        }
+
+        .comment {
+            background: white;
+            padding: 10px 12px;
+            border-radius: 16px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .comment-author {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #4a6741;
+            font-size: 0.85rem;
+        }
+
+        .comment p {
+            font-size: 0.85rem;
+            color: #5a6b5a;
+            line-height: 1.5;
+            margin-bottom: 4px;
+        }
+
+        .comment div:last-child {
+            font-size: 0.7rem;
+            color: #aa8e54;
+        }
+
+        .checkin-buttons {
+            display: flex;
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .checkin-btn {
+            flex: 1;
+            background: linear-gradient(135deg, #f5a623, #e07e2e);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(245, 166, 35, 0.3);
+        }
+
+        .checkin-btn:active {
+            transform: scale(0.95);
+        }
+
+        .map-panels-container {
+            display: flex;
+            flex-direction: row;
+            gap: 12px;
+            height: 550px;
+        }
+
+        .map-container {
+            flex: 1;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #e9f0e3;
+            position: relative;
+            width: 100%;
+        }
+
+        .side-panels {
+            width: 170px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .side-panel {
+            flex: 1;
+            background: linear-gradient(180deg, #fffef7 0%, #fff8e8 100%);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(185, 127, 16, 0.08);
+            border: 1px solid rgba(255, 200, 100, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            padding: 10px 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .panel-header.orange {
+            background: linear-gradient(135deg, #f5a623 0%, #e07e2e 100%);
+            color: white;
+        }
+
+        .panel-header.green {
+            background: linear-gradient(135deg, #7cb518 0%, #5a8a10 100%);
+            color: white;
+        }
+
+        .panel-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 6px;
+        }
+
+        .panel-item {
+            padding: 8px 10px;
+            margin-bottom: 4px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.78rem;
+            color: #5a6b4a;
+            background: white;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .panel-item:hover {
+            background: #f5f5f0;
+            border-color: #e8e0c8;
+        }
+
+        .panel-item.active {
+            font-weight: 600;
+            color: #3b5c2a;
+        }
+
+        .panel-item.feeding.active {
+            background: linear-gradient(135deg, #ffe8c8 0%, #ffd99a 100%);
+            border-color: #ffc864;
+        }
+
+        .panel-item.cat.active {
+            background: linear-gradient(135deg, #e6f5de 0%, #d4eed4 100%);
+            border-color: #7cb518;
+        }
+
+        #map-container {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .科普-card {
+            margin-top: 12px;
+            background: #eef3e6;
+            border-radius: 20px;
+            padding: 12px 14px;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: #3b5c3b;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .stat-item {
+            background: #f1f7ec;
+            padding: 10px 20px;
+            border-radius: 40px;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #e08e2e;
+        }
+
+        .stat-item div:last-child {
+            font-size: 0.75rem;
+            color: #5a6b5a;
+            margin-top: 2px;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow-x: auto;
+            display: block;
+            font-size: 0.75rem;
+        }
+
+        .admin-table th, .admin-table td {
+            padding: 8px 6px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .admin-table th {
+            background: #f1f7ec;
+            font-weight: 600;
+            color: #2b6e3c;
+        }
+
+        .action-btn {
+            padding: 4px 10px;
+            border-radius: 30px;
+            border: none;
+            margin: 0 2px;
+            cursor: pointer;
+            font-size: 0.7rem;
+        }
+
+        .approve-btn { background: #4caf50; color: white; }
+        .reject-btn { background: #f44336; color: white; }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            justify-content: flex-end;
+            align-items: flex-end;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-height: 85vh;
+            border-radius: 24px 24px 0 0;
+            padding: 20px 16px;
+            padding-bottom: calc(20px + env(safe-area-inset-bottom));
+            overflow-y: auto;
+        }
+
+        .modal-content h3 {
+            font-size: 1.15rem;
+            color: #2b6e3c;
+            margin-bottom: 16px;
+        }
+
+        .modal-content label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #4a5c4a;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .modal-content input[type="text"],
+        .modal-content textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 16px;
+            border: 1px solid #ddd;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            background: #fafafa;
+        }
+
+        .modal-content textarea {
+            min-height: 80px;
+            resize: none;
+        }
+
+        .modal-content input[type="file"] {
+            margin-bottom: 12px;
+            width: 100%;
+        }
+
+        #aiPreview {
+            font-size: 0.75rem;
+            color: #b45f1b;
+            margin-bottom: 12px;
+        }
+
+        .user-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+        }
+
+        #modalTypeText {
+            font-size: 0.9rem;
+            color: #5a6b5a;
+            margin-bottom: 16px;
+        }
+
+        #closeModal {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #888;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        #storyInput {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 30px;
+            border: 1px solid #e2d5b6;
+            font-size: 0.85rem;
+            background: white;
+        }
+
+        #submitStoryBtn {
+            padding: 10px 18px;
+            font-size: 0.85rem;
+            border-radius: 30px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 16px;
+            font-size: 0.8rem;
+            color: #8a9a8a;
+        }
+
+        @media (min-width: 700px) {
+            .cat-gallery {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+            .cat-profile {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🐈 河海喵境 · 校园流浪猫图鉴</h1>
+        <p>📌 基于真实档案 | 打卡互动 | 科学救助</p>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#map">🗺️ 地图</a></li>
+            <li><a href="#gallery">📚 图鉴</a></li>
+            <li><a href="#checkin">📸 打卡</a></li>
+            <li><a href="#user">👤 我的</a></li>
+            <li><a href="#admin">⚙️ 管理</a></li>
+        </ul>
+    </nav>
+
+    <section id="map" class="section">
+        <h2>📍 校园流浪猫分布 & 喂猫点</h2>
+        <div class="map-panels-container">
+            <div class="map-container">
+                <div id="map-container"></div>
+            </div>
+            <div class="side-panels">
+                <div id="feedingSpotsPanel" class="side-panel">
+                    <div class="panel-header orange">🥣 喂猫点</div>
+                    <div id="feedingSpotsList" class="panel-list"></div>
+                </div>
+                <div id="catLocationsPanel" class="side-panel">
+                    <div class="panel-header green">🐱 猫咪常驻点</div>
+                    <div id="catLocationsList" class="panel-list"></div>
+                </div>
+            </div>
+        </div>
+        <div class="科普-card">
+            💡 橘色猫爪 = 猫咪常驻点 | 🥣 食盆 = 建议投喂点 | 点击标记查看档案
+        </div>
+    </section>
+
+    <section id="gallery" class="section">
+        <h2>🐾 猫咪图鉴</h2>
+        <div class="cat-gallery-container">
+            <div id="catMenuList" class="cat-menu">
+                <div class="menu-header">🐱 猫咪列表</div>
+                <div id="catMenuItems" class="menu-items"></div>
+            </div>
+            <div id="catDetailArea" class="cat-detail-panel">
+                <div id="selectedCatDetail">✨ 请从左侧选择一只猫咪，查看详细档案、故事和留言～</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="checkin" class="section">
+        <h2>📸 偶遇/投喂打卡</h2>
+        <div class="checkin-buttons">
+            <button id="encounterBtn" class="checkin-btn">🐾 偶遇打卡</button>
+            <button id="feedBtn" class="checkin-btn">🍚 投喂打卡</button>
+        </div>
+        <div class="科普-card" style="background:#fcf2df;">
+            🧠 喵课堂 · 投喂须知：不要喂巧克力、洋葱、牛奶！猫条猫粮为佳，保持水源干净。
+        </div>
+    </section>
+
+    <section id="user" class="section">
+        <h2>😺 我的喵星足迹</h2>
+        <div style="text-align: center; margin-bottom: 16px;">
+            <img src="https://picsum.photos/id/151/100/100" class="user-avatar">
+            <h3 style="margin-top: 10px; color: #2b6e3c;">河海喵行者</h3>
+            <div class="stats">
+                <div class="stat-item"><div class="stat-number" id="userCheckinCount">0</div><div>打卡次数</div></div>
+                <div class="stat-item"><div class="stat-number" id="userCollectCount">5</div><div>收藏猫咪</div></div>
+                <div class="stat-item"><div class="stat-number" id="userCommentCount">0</div><div>留言数</div></div>
+            </div>
+        </div>
+        <div>
+            <h3 style="font-size: 0.95rem; color: #2b6e3c; margin-bottom: 10px;">📋 我的打卡记录</h3>
+            <div id="userCheckinList" style="max-height: 200px; overflow-y: auto;"></div>
+        </div>
+    </section>
+
+    <section id="admin" class="section">
+        <h2>🛡️ 管理员审核 & 数据看板</h2>
+        <div class="admin-panel">
+            <h3 style="font-size: 0.95rem; color: #2b6e3c; margin-bottom: 10px;">⏳ 待审核打卡</h3>
+            <table class="admin-table" id="auditTable">
+                <thead><tr><th>用户</th><th>类型</th><th>位置</th><th>AI识别/备注</th><th>操作</th></tr></thead>
+                <tbody id="auditTbody"></tbody>
+            </table>
+        </div>
+        <div style="margin-top: 16px;">
+            <h3 style="font-size: 0.95rem; color: #2b6e3c; margin-bottom: 10px;">📊 校园猫情看板</h3>
+            <div class="stats">
+                <div class="stat-item"><div class="stat-number" id="totalCatsStat">0</div><div>常驻猫咪</div></div>
+                <div class="stat-item"><div class="stat-number" id="monthCheckinsStat">0</div><div>本月打卡</div></div>
+                <div class="stat-item"><div class="stat-number" id="hotSpotsStat">12</div><div>高概率喂猫点</div></div>
+            </div>
+            <div style="background:#fef3e0; border-radius: 20px; padding: 12px; margin-top: 12px; font-size: 0.85rem;">🏆 明星猫咪榜：猪猪·妖精·大佐·蜜橘 | 热心投喂官：橙子同学 小鱼干君</div>
+        </div>
+    </section>
+    <footer>🐱 关爱流浪猫 · 从记录开始 · HHU喵呜社 2026</footer>
+</div>
+
+<div id="checkinModal" class="modal">
+    <div class="modal-content">
+        <button id="closeModal">&times;</button>
+        <h3>📸 新打卡</h3>
+        <p id="modalTypeText"></p>
+        <label>📍 位置</label>
+        <input type="text" id="checkinLocation" placeholder="自动定位或手动填写">
+        <label>📷 上传照片 (AI识别喵星人)</label>
+        <input type="file" id="checkinPhoto" accept="image/*">
+        <div id="aiPreview"></div>
+        <label>📝 备注</label>
+        <textarea id="checkinNote" rows="3" placeholder="分享你的偶遇故事..."></textarea>
+        <button id="submitCheckin" class="checkin-btn" style="width:100%; margin-top:12px;">提交打卡 待审核</button>
+    </div>
+</div>
+
+<script>
+    const catsData = [
+        { id: 1, name: "大佐", gender: "公", color: "狸花白胡子", personality: "不可摸，贪吃怂，小黑胡子", status: "已绝育", location: "厚学楼、节水园、西门", image: "images/大佐.jpg", tags: ["八嘎猫","胆小"], story: "小黑胡子，性格怂但顽强。", lat: 31.9145, lng: 118.7775 },
+        { id: 2, name: "大脸(月饼)", gender: "公", color: "脸大白嘴", personality: "不可摸，脸大脚大", status: "已绝育", location: "校园西边", image: "images/大脸.jpg", tags: ["冰棍爸爸"], story: "脸大脚大，和柠檬是好兄弟。", lat: 31.9125, lng: 118.7650 },
+        { id: 3, name: "柠檬", gender: "公", color: "橘白", personality: "不可摸，水果天团", status: "已绝育", location: "西门", image: "images/柠檬.jpg", tags: ["水果天团"], story: "水果天团成员，期待投喂。", lat: 31.9120, lng: 118.7630 },
+        { id: 4, name: "马户(布丁)", gender: "公", color: "橘白", personality: "右眼失明，口炎拔牙", status: "已绝育", location: "思源楼", image: "images/马户.jpg", tags: ["独眼","口炎"], story: "坚强的小猫咪，需要关爱。", lat: 31.9150, lng: 118.7760 },
+        { id: 5, name: "妖精", gender: "母", color: "三花", personality: "大多不可摸，有膀胱炎", status: "已绝育", location: "22舍下", image: "images/妖精.jpg", tags: ["HHU校花","膀胱炎"], story: "校花级猫咪，需要多喝水。", lat: 31.9200, lng: 118.7730 },
+        { id: 6, name: "猪猪", gender: "公", color: "琥珀眼橘白", personality: "间接可撸，校草级", status: "已绝育", location: "东湖锚旁", image: "images/猪猪.jpg", tags: ["校草","东湖霸主"], story: "猪霸天，守护东湖的霸主。", lat: 31.9150, lng: 118.7800 },
+        { id: 7, name: "橘胖", gender: "公", color: "橘色", personality: "性格好，需减肥", status: "已绝育", location: "东湖锚旁", image: "images/橘胖.jpg", tags: ["大哥大","需减肥"], story: "憨厚可爱，爱钻下水道。", lat: 31.9150, lng: 118.7800 },
+        { id: 8, name: "葡萄(乌龙)", gender: "母", color: "三花", personality: "非常胆小，不可靠近", status: "已绝育", location: "勤学楼", image: "images/葡萄.jpg", tags: ["水果天团"], story: "误被绝育闹乌龙，很小一只。", lat: 31.9110, lng: 118.7810 },
+        { id: 9, name: "芒果", gender: "公", color: "橘白", personality: "看心情给摸", status: "已绝育", location: "博学楼附近", image: "images/芒果.jpg", tags: ["水果天团","肥美"], story: "博学楼水果天团成员。", lat: 31.9140, lng: 118.7815 },
+        { id: 10, name: "山竹", gender: "母", color: "玳瑁", personality: "不可靠近，小饭桶", status: "已绝育", location: "博学楼", image: "images/山竹.jpg", tags: ["小饭桶"], story: "超级能吃，每天和芒果吵架。", lat: 31.9140, lng: 118.7815 },
+        { id: 11, name: "榴莲", gender: "公", color: "狸花", personality: "不可摸，怕人", status: "未绝育", location: "博学楼附近", image: "images/榴莲.jpg", tags: ["怕人"], story: "胆小怕人，保持距离。", lat: 31.9140, lng: 118.7815 },
+        { id: 12, name: "大刀", gender: "公", color: "狸花", personality: "怕人，几乎无法靠近", status: "已绝育", location: "博学楼", image: "images/大刀.jpg", tags: ["高冷"], story: "高冷猫咪，难以接近。", lat: 31.9140, lng: 118.7815 },
+        { id: 13, name: "猴猴", gender: "母", color: "白身橘尾", personality: "怕人，熟悉可摸", status: "已绝育", location: "行政楼", image: "images/猴猴.jpg", tags: ["娇滴滴"], story: "猢狲的妈妈，温柔可爱。", lat: 31.9195, lng: 118.7760 },
+        { id: 14, name: "猢狲(焦糖)", gender: "母", color: "三花", personality: "胆小，不可靠近", status: "已绝育", location: "行政楼", image: "images/猢狲.jpg", tags: ["胆小"], story: "猴猴的女儿，胆小可爱。", lat: 31.9195, lng: 118.7760 },
+        { id: 15, name: "草草", gender: "母", color: "狸花", personality: "胆小，不可摸", status: "已绝育", location: "厚学楼", image: "images/草草.jpg", tags: ["胆小"], story: "安安的妈妈，广场恶霸。", lat: 31.9145, lng: 118.7775 },
+        { id: 16, name: "鱼饼(小泰迪)", gender: "公", color: "泰迪卷", personality: "熟悉可摸可抱", status: "已绝育", location: "乐学楼、厚学楼", image: "images/鱼饼.jpg", tags: ["泰迪卷","亲人"], story: "卷毛小可爱，可抱可撸。", lat: 31.9145, lng: 118.7775 },
+        { id: 17, name: "安安", gender: "母", color: "狸花", personality: "饿了亲人，吃饱不理", status: "已绝育", location: "情人坡", image: "images/安安.jpg", tags: ["傲娇"], story: "傲娇小公主，饿了才理人。", lat: 31.9090, lng: 118.7790 },
+        { id: 19, name: "奶昔", gender: "母", color: "三花", personality: "不可摸", status: "已绝育", location: "厚学楼、笃学楼", image: "images/奶昔.jpg", tags: ["高冷"], story: "高冷三花，保持神秘。", lat: 31.9145, lng: 118.7775 },
+        { id: 20, name: "金桔", gender: "公", color: "橘白", personality: "可蹭不可摸，有口炎", status: "已绝育", location: "乐学楼", image: "images/金桔.jpg", tags: ["口炎"], story: "有口炎需要特殊照顾。", lat: 31.9145, lng: 118.7775 },
+        { id: 21, name: "猕猴桃", gender: "公", color: "狸花", personality: "不可靠近不可摸", status: "未绝育", location: "行政楼、博学楼", image: "images/猕猴桃.jpg", tags: ["高冷"], story: "高冷小王子，难以接近。", lat: 31.9168, lng: 118.7788 },
+        { id: 22, name: "迪佐", gender: "公", color: "狸花", personality: "熟悉可摸", status: "已绝育", location: "博学楼、东湖", image: "images/迪佐.jpg", tags: ["全校闪动"], story: "爱打架，居无定所。", lat: 31.9145, lng: 118.7808 },
+        { id: 23, name: "高高", gender: "公", color: "橘白", personality: "胆小，不常出现", status: "已绝育", location: "东湖", image: "images/高高.jpg", tags: ["神秘"], story: "神秘猫咪，不常出现。", lat: 31.9150, lng: 118.7800 },
+        { id: 24, name: "笨笨", gender: "母", color: "三花", personality: "胆小，逐渐亲人", status: "未绝育", location: "东门附近", image: "images/笨笨.jpg", tags: ["胆小"], story: "正在慢慢信任人类。" },
+        { id: 25, name: "六花", gender: "母", color: "三花", personality: "亲人，贪吃活泼", status: "已绝育", location: "22舍下", image: "images/六花.jpg", tags: ["亲人","活泼"], story: "活泼可爱的三花妹妹。", lat: 31.9200, lng: 118.7730 },
+        { id: 26, name: "摩托", gender: "公", color: "橘白", personality: "会蹭人，爱吵架", status: "已绝育", location: "13舍附近", image: "images/摩托.jpg", tags: ["小个子"], story: "小个子爱吵架。", lat: 31.9180, lng: 118.7685 },
+        { id: 27, name: "啵啵", gender: "公", color: "橘白", personality: "略微胆小，可攻略", status: "已绝育", location: "广场", image: "images/啵啵.jpg", tags: ["胆小"], story: "可攻略的小可爱。", lat: 31.9139, lng: 118.7862 },
+        { id: 28, name: "饼饼", gender: "公", color: "橘白", personality: "胆小贪吃", status: "已绝育", location: "行政楼附近", image: "images/饼饼.jpg", tags: ["贪吃"], story: "胆小但贪吃。", lat: 31.9195, lng: 118.7760 },
+        { id: 29, name: "苦橘", gender: "公", color: "橘色", personality: "贪吃，有亲人倾向", status: "未绝育", location: "行政楼附近", image: "images/苦橘.jpg", tags: ["贪吃"], story: "正在努力变亲人。", lat: 31.9195, lng: 118.7760 },
+        { id: 30, name: "蜜橘", gender: "公", color: "橘色", personality: "给摸给抱，乖乖猫", status: "已绝育", location: "博学楼", image: "images/蜜橘.jpg", tags: ["大好猫"], story: "绝育后蜕变为超级乖乖猫。", lat: 31.9140, lng: 118.7815 },
+        { id: 31, name: "白糖", gender: "公", color: "白猫", personality: "桀骜不驯", status: "未绝育", location: "东湖附近", image: "images/白糖.jpg", tags: ["吵架王"], story: "桀骜不驯的白喵。", lat: 31.9150, lng: 118.7800 },
+        { id: 32, name: "小婵", gender: "母", color: "玳瑁", personality: "非常亲人", status: "已绝育", location: "19舍门口", image: "images/小婵.jpg", tags: ["粘人精"], story: "非常亲人的玳瑁妹妹。" }
+    ];
+
+    const feedingSpots = [
+        { name: "农工院", pos: [118.782753, 31.916234] },
+        { name: "行政楼南门", pos: [118.784331, 31.912034] },
+        { name: "叠翠山", pos: [118.785094, 31.915906] },
+        { name: "商学院图书馆花园", pos: [118.787338, 31.912231] },
+        { name: "垃圾中转站（8舍西侧）", pos: [118.784149, 31.91754] },
+        { name: "东湖东北角", pos: [118.787799, 31.915384] },
+        { name: "东湖船锚", pos: [118.787122, 31.914806] },
+        { name: "博学楼东侧", pos: [118.788437, 31.912509] },
+        { name: "19舍巷子", pos: [118.782079, 31.914421] },
+        { name: "22舍楼下", pos: [118.788815, 31.916518] },
+        { name: "猫粮取用点（25舍下）", pos: [118.789065, 31.916974] }
+    ];
+
+    let map, heatmap;
+    let pendingCheckins = [];
+    let userCheckins = JSON.parse(localStorage.getItem("hhucat_checkins")) || [];
+    let commentsMap = new Map();
+    let currentCat = catsData[0];
+
+    catsData.forEach(cat => {
+        if (!commentsMap.has(cat.id)) {
+            commentsMap.set(cat.id, [
+                { author: "喵呜社", text: "🐾 欢迎留下你和" + cat.name + "的小故事~", date: "2026-04-01" }
+            ]);
+        }
+    });
+
+    function renderCatGallery() {
+        const menuContainer = document.getElementById("catMenuItems");
+        menuContainer.innerHTML = catsData.map(cat => `
+            <div class="menu-item" data-id="${cat.id}">
+                ${cat.name}
+            </div>
+        `).join('');
+        document.querySelectorAll(".menu-item").forEach(item => {
+            item.addEventListener("click", () => {
+                document.querySelectorAll(".menu-item").forEach(i => i.classList.remove("active"));
+                item.classList.add("active");
+                const id = parseInt(item.dataset.id);
+                const cat = catsData.find(c => c.id === id);
+                if (cat) showCatDetail(cat);
+            });
+        });
+    }
+
+    function showCatDetail(cat) {
+        currentCat = cat;
+        const detailDiv = document.getElementById("selectedCatDetail");
+        detailDiv.innerHTML = `
+            <div class="cat-profile">
+                <img class="cat-avatar-large" src="${cat.image}" alt="${cat.name}">
+                <div class="cat-info">
+                    <h3>${cat.name} · ${cat.gender} · ${cat.color}</h3>
+                    <p><strong>📍 常驻地：</strong> ${cat.location}</p>
+                    <p><strong>😺 性格：</strong> ${cat.personality}</p>
+                    <p><strong>💉 绝育：</strong> ${cat.status}</p>
+                    <p><strong>📖 小传：</strong> ${cat.story}</p>
+                    <div class="cat-tags">${cat.tags.map(t => '<span class="tag">#'+t+'</span>').join('')}</div>
+                </div>
+            </div>
+            <div class="story-wall">
+                <h4>💬 故事墙 · 留言板</h4>
+                <div id="storyCommentsList"></div>
+                <div style="display:flex; gap:8px; margin-top:12px;">
+                    <input type="text" id="storyInput" placeholder="分享你与${cat.name}的暖心瞬间...">
+                    <button id="submitStoryBtn" class="checkin-btn">留言</button>
+                </div>
+            </div>
+        `;
+        renderStoryComments(cat.id);
+        document.getElementById("submitStoryBtn")?.addEventListener("click", () => {
+            const input = document.getElementById("storyInput");
+            if (input.value.trim()) {
+                addCommentToCat(cat.id, "热心同学", input.value.trim());
+                input.value = "";
+                renderStoryComments(cat.id);
+                updateUserCommentCount();
+            }
+        });
+    }
+
+    function renderStoryComments(catId) {
+        const container = document.getElementById("storyCommentsList");
+        if (!container) return;
+        const comments = commentsMap.get(catId) || [];
+        container.innerHTML = comments.map(c => `<div class="comment"><div class="comment-author">🐈 ${c.author}</div><p>${c.text}</p><div style="font-size:11px; color:#aa8e54;">${c.date}</div></div>`).join('');
+    }
+
+    function addCommentToCat(catId, author, text) {
+        let arr = commentsMap.get(catId) || [];
+        arr.unshift({ author, text, date: new Date().toLocaleString() });
+        commentsMap.set(catId, arr);
+        localStorage.setItem("hhucat_comments", JSON.stringify([...commentsMap.entries()]));
+    }
+
+    function updateUserCommentCount() {
+        let totalComments = 0;
+        for (let val of commentsMap.values()) totalComments += val.length;
+        document.getElementById("userCommentCount").innerText = totalComments;
+    }
+
+    function initMap() {
+        try {
+            if (typeof AMap === 'undefined') {
+                setTimeout(initMap, 500);
+                return;
+            }
+
+            map = new AMap.Map('map-container', {
+                zoom: 17,
+                center: [118.786191, 31.913925],
+                viewMode: '2D',
+                mapStyle: 'amap://styles/normal'
+            });
+
+            map.addControl(new AMap.ToolBar());
+            map.addControl(new AMap.Scale());
+
+            catsData.forEach(cat => {
+                if (cat.lat && cat.lng) {
+                    let marker = new AMap.Marker({
+                        position: [cat.lng, cat.lat],
+                        title: cat.name,
+                        icon: new AMap.Icon({
+                            size: new AMap.Size(30, 30),
+                            image: "https://webapi.amap.com/theme/v1.3/markers/b/mark_blue.png",
+                            imageSize: new AMap.Size(30, 30)
+                        }),
+                        offset: new AMap.Pixel(-15, -15)
+                    });
+                    marker.setMap(map);
+                    marker.on('click', () => {
+                        showCatDetail(cat);
+                        document.getElementById("gallery").scrollIntoView({ behavior: "smooth" });
+                    });
+                }
+            });
+
+            feedingSpots.forEach(spot => {
+                let feedMarker = new AMap.Marker({
+                    position: spot.pos,
+                    title: spot.name,
+                    icon: new AMap.Icon({
+                        size: new AMap.Size(30, 30),
+                        image: "https://webapi.amap.com/theme/v1.3/markers/b/mark_orange.png",
+                        imageSize: new AMap.Size(30, 30)
+                    }),
+                    offset: new AMap.Pixel(-15, -15)
+                });
+                feedMarker.setMap(map);
+                feedMarker.on('click', () => {
+                    let info = new AMap.InfoWindow({ content: '<div style="padding:5px; font-size:12px;">🍽️ '+spot.name+'<br>推荐投喂点，请放猫粮/清水</div>' });
+                    info.open(map, spot.pos);
+                });
+            });
+
+            AMap.plugin('AMap.Heatmap', () => {
+                heatmap = new AMap.Heatmap(map, {
+                    radius: 25,
+                    opacity: [0, 0.7],
+                    visible: false
+                });
+                let heatData = catsData.filter(c => c.lat).map(c => ({ lng: c.lng, lat: c.lat, count: 12 }));
+                heatmap.setDataSet({ data: heatData, max: 20 });
+            });
+
+        } catch (error) {
+            console.error('地图初始化失败:', error);
+        }
+    }
+
+    const modal = document.getElementById("checkinModal");
+    let currentCheckinType = "偶遇";
+
+    function openModal(type) {
+        currentCheckinType = type;
+        document.getElementById("modalTypeText").innerHTML = `${type}打卡 · 上传照片AI辅助识别`;
+        modal.style.display = "flex";
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(pos => {
+                document.getElementById("checkinLocation").value = `自动定位 (${pos.coords.latitude.toFixed(4)},${pos.coords.longitude.toFixed(4)})`;
+            }, () => {});
+        }
+    }
+
+    document.getElementById("encounterBtn").onclick = () => openModal("偶遇");
+    document.getElementById("feedBtn").onclick = () => openModal("投喂");
+    document.getElementById("closeModal").onclick = () => modal.style.display = "none";
+
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) modal.style.display = "none";
+    });
+
+    document.getElementById("submitCheckin").onclick = () => {
+        let loc = document.getElementById("checkinLocation").value || "校园某处";
+        let note = document.getElementById("checkinNote").value;
+        let file = document.getElementById("checkinPhoto").files[0];
+        let aiMsg = "未识别";
+        if (file) aiMsg = "🧠 AI模拟识别: 疑似橘猫/狸花 (待管理员确认)";
+        const newRecord = { id: Date.now(), user: "河海喵行者", type: currentCheckinType, location: loc, note, ai: aiMsg, status: "pending", timestamp: new Date().toLocaleString() };
+        pendingCheckins.push(newRecord);
+        renderAuditTable();
+        modal.style.display = "none";
+        document.getElementById("checkinPhoto").value = "";
+        alert("打卡已提交，等待管理员审核✨");
+    };
+
+    function renderAuditTable() {
+        const tbody = document.getElementById("auditTbody");
+        tbody.innerHTML = pendingCheckins.map((item, idx) => `
+            <tr>
+                <td>${item.user}</td><td>${item.type}</td><td>${item.location}</td><td>${item.ai}</td>
+                <td><button class="action-btn approve-btn" data-idx="${idx}">通过</button><button class="action-btn reject-btn" data-idx="${idx}">拒绝</button></td>
+            </tr>
+        `).join('');
+        document.querySelectorAll(".approve-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                let idx = btn.dataset.idx;
+                let approved = pendingCheckins[idx];
+                userCheckins.push({ ...approved, status: "approved" });
+                localStorage.setItem("hhucat_checkins", JSON.stringify(userCheckins));
+                pendingCheckins.splice(idx, 1);
+                renderAuditTable();
+                updatePersonalStats();
+                alert("审核通过，地图热度增加");
+                if (heatmap) heatmap.show();
+            });
+        });
+        document.querySelectorAll(".reject-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                let idx = btn.dataset.idx;
+                pendingCheckins.splice(idx, 1);
+                renderAuditTable();
+            });
+        });
+    }
+
+    function updatePersonalStats() {
+        document.getElementById("userCheckinCount").innerText = userCheckins.length;
+        const listHtml = userCheckins.map(c => `<div class="comment"><strong>${c.type}打卡</strong> ${c.location}<br><small>${c.timestamp}</small><p>${c.note || ''}</p></div>`).join('');
+        document.getElementById("userCheckinList").innerHTML = listHtml || "<div style='text-align:center; color:#999; padding:10px;'>暂无打卡记录</div>";
+        const thisMonth = userCheckins.filter(c => new Date(c.timestamp).getMonth() === new Date().getMonth()).length;
+        document.getElementById("monthCheckinsStat").innerText = thisMonth + pendingCheckins.length;
+        document.getElementById("totalCatsStat").innerText = catsData.length;
+    }
+
+    function renderFeedingSpotsList() {
+        const container = document.getElementById("feedingSpotsList");
+        container.innerHTML = feedingSpots.map((spot, index) => `
+            <div class="panel-item feeding" data-index="${index}">
+                🍽️ ${spot.name}
+            </div>
+        `).join('');
+        document.querySelectorAll(".panel-item.feeding").forEach(item => {
+            item.addEventListener("click", () => {
+                document.querySelectorAll(".panel-item").forEach(i => i.classList.remove("active"));
+                item.classList.add("active");
+                const index = parseInt(item.dataset.index);
+                const spot = feedingSpots[index];
+                if (spot && map) {
+                    map.setCenter(spot.pos);
+                    map.setZoom(18);
+                    let info = new AMap.InfoWindow({ 
+                        content: '<div style="padding:8px; font-size:14px;">🍽️ '+spot.name+'<br>推荐投喂点，请放猫粮/清水</div>' 
+                    });
+                    info.open(map, spot.pos);
+                }
+            });
+        });
+    }
+
+    
+
+    function init() {
+        renderCatGallery();
+        showCatDetail(catsData[0]);
+        initMap();
+        renderFeedingSpotsList();
+        renderCatLocationsList();
+        renderAuditTable();
+        updatePersonalStats();
+        updateUserCommentCount();
+        document.getElementById("hotSpotsStat").innerText = feedingSpots.length;
+        const savedComments = localStorage.getItem("hhucat_comments");
+        if (savedComments) {
+            try {
+                const arr = JSON.parse(savedComments);
+                commentsMap.clear();
+                arr.forEach(([k, v]) => commentsMap.set(parseInt(k), v));
+                if (currentCat) renderStoryComments(currentCat.id);
+                updateUserCommentCount();
+            } catch(e) {}
+        }
+    }
+    init();
+</script>
+</body>
+</html>
