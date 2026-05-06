@@ -22,7 +22,10 @@ app.use('/api/v1/cats', catsRouter);
 app.use('/api/v1/checkins', checkinsRouter);
 app.use('/api/v1/map', mapRouter);
 
-// 测试接口
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'client', 'cat-map.html'));
+});
+
 app.get('/api', (req, res) => {
   res.json({ message: '🐱 河海喵境 API 运行中...' });
 });
